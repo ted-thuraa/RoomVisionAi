@@ -64,6 +64,20 @@ class ReplicateService
     }
 
     /**
+     * Cancel the progress of an AI prediction by url.
+     *
+     * @param string $url
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelPrediction($url)
+    {
+        return Http::withHeaders($this->headers)
+            ->acceptJson()
+            ->timeout(60)
+            ->get("{$this->url}/{$url}");
+    }
+
+    /**
      * Convert an image to base64 format.
      *
      * @param string $path

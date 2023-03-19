@@ -1,7 +1,7 @@
 import { features } from "../../constants";
 import styles, { layout } from "../../style";
-import before1 from "../../assets/images/before1.jpg";
-import after1 from "../../assets/images/after1.jpg";
+import before1 from "../../assets/images/bad4.jpg";
+import after1 from "../../assets/images/bad4-new.jpg";
 import Button from "./Button";
 
 const FeatureCard = ({ icon, title, content, index }) => (
@@ -78,8 +78,8 @@ const Business = () => (
                         <img
                             alt="Original photo"
                             src={before1}
-                            className="w-96 h-96 rounded-2xl mt-5"
-                            width={400}
+                            className=" h-96 rounded-2xl mt-5"
+                            width={460}
                             height={400}
                         />
                     </div>
@@ -90,9 +90,9 @@ const Business = () => (
                         <img
                             alt="Restored photo"
                             src={after1}
-                            width={400}
+                            width={460}
                             height={400}
-                            className="w-96 h-96 rounded-2xl sm:mt-5"
+                            className=" h-96 rounded-2xl sm:mt-5"
                         />
                     </div>
                 </div>

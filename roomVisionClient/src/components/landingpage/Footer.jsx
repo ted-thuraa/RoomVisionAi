@@ -1,4 +1,5 @@
 import styles from "../../style";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import { logo } from "../../assets/images";
 import { footerLinks, socialMedia } from "../../constants";
 
@@ -6,11 +7,12 @@ const Footer = () => (
     <section className={`${styles.flexCenter} ${styles.paddingY} flex-col`}>
         <div className={`${styles.flexStart} md:flex-row flex-col mb-8 w-full`}>
             <div className="flex-[1] flex flex-col justify-start mr-10">
-                <img
-                    src={logo}
-                    alt="hoobank"
-                    className="w-[266px] h-[72.14px] object-contain"
-                />
+                <Link to="/" className="-m-1.5 p-1.5 flex items-center">
+                    <img className="h-10 w-10 logo_rgb" src={logo} alt="logo" />
+                    <span className="text-slate-300 logo_rgb sm:text-3xl text-2xl font-bold ml-2 tracking-tight">
+                        Intellidecor.Ai
+                    </span>
+                </Link>
                 <p className={`${styles.paragraph} mt-4 max-w-[312px]`}>
                     A new way to render designs for your room easy and fast.
                 </p>

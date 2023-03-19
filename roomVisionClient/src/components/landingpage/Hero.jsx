@@ -36,7 +36,7 @@ const Hero = () => {
                         className="bg-rgb rounded-xl text-white font-medium px-4 py-3 sm:mt-10 mt-8 hover:bg-black/80"
                         href="/design"
                     >
-                        Render Ideas
+                        Try for free
                     </a>
                 </div>
             </div>

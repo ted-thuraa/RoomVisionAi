@@ -57,7 +57,7 @@ body {
 }
 
 .background_bluish {
-    background-color: #00040f;
+    background-color: #00071b;
 }
 
 .text-gradient {
@@ -137,6 +137,27 @@ body {
 
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
+}
+
+.logo_rgb {
+    background: rgb(131, 58, 180);
+    background: linear-gradient(
+        90deg,
+        rgba(131, 58, 180, 1) 0%,
+        rgba(253, 29, 29, 1) 50%,
+        rgba(252, 176, 69, 1) 100%
+    );
+
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+.bg_auth {
+    background-image: url("./assets/images/pin7.jpg");
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .box-shadow {

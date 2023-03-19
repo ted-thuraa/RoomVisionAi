@@ -3,7 +3,7 @@ import React from "react";
 export default function NotFound() {
     return (
         <>
-            <main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
+            <main className="grid h-screen place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
                 <div className="text-center">
                     <p className="text-base font-semibold text-indigo-600">
                         404

@@ -91,7 +91,7 @@ export default function Header() {
             setToken(null);
         });
     };
-
+    console.log(token);
     return (
         <header className=" w-full">
             <nav
@@ -100,9 +100,13 @@ export default function Header() {
             >
                 <div className="flex lg:flex-1">
                     <Link to="/" className="-m-1.5 p-1.5 flex items-center">
-                        <img className="h-10 w-10" src={logo} alt="logo" />
-                        <span className="text-slate-300 sm:text-3xl text-2xl font-bold ml-2 tracking-tight">
-                            RoomVision.Ai
+                        <img
+                            className="h-10 w-10 logo_rgb"
+                            src={logo}
+                            alt="logo"
+                        />
+                        <span className="text-slate-300 logo_rgb sm:text-3xl text-2xl font-bold ml-2 tracking-tight">
+                            Intellidecor.Ai
                         </span>
                     </Link>
                 </div>
@@ -194,16 +198,18 @@ export default function Header() {
                     >
                         Blog
                     </Link>
+                    <Link
+                        to="/pricing"
+                        className="text-sm font-semibold leading-6 text-gray-200"
+                    >
+                        Pricing
+                    </Link>
                 </Popover.Group>
 
                 {token && (
                     <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center">
                         <Popover className="relative">
                             <Popover.Button className="flex items-center gap-x-1 border-0 text-sm font-semibold leading-6 text-gray-200">
-                                <img
-                                    className="rounded-full w-8 h-8 object-cover"
-                                    src={avatar}
-                                />
                                 <p>
                                     <span className="text-gray-400 text-14">
                                         {email}
@@ -235,9 +241,12 @@ export default function Header() {
                                     </div>
                                     <div className="flex gap-5 items-center mt-1 border-color border-b-1 pb-6  hover:bg-gray-900 cursor-pointer  dark:hover:bg-[#42464D]">
                                         <div>
-                                            <p className="text-gray-300 text-sm font-semibold dark:text-gray-400">
+                                            <Link
+                                                to="/design"
+                                                className="text-gray-300 text-sm font-semibold dark:text-gray-400"
+                                            >
                                                 Dashboard
-                                            </p>
+                                            </Link>
                                         </div>
                                     </div>
                                     <div className="flex gap-5 items-center mt-1 border-color border-b-1 pb-6  hover:bg-gray-900 cursor-pointer  dark:hover:bg-[#42464D]">
@@ -251,12 +260,12 @@ export default function Header() {
                                         </div>
                                     </div>
                                     <div className="mt-5">
-                                        <a
+                                        <Link
                                             className="bg-white rounded-xl text-gray-900 font-medium px-4 py-3 sm:mt-10 mt-8 hover:bg-gray-200"
-                                            href="/restore"
+                                            to="/pricing"
                                         >
                                             Upgrade to pro
-                                        </a>
+                                        </Link>
                                     </div>
                                 </Popover.Panel>
                             </Transition>
@@ -296,16 +305,12 @@ export default function Header() {
                 <div className="fixed inset-0 z-10" />
                 <Dialog.Panel
                     focus="true"
-                    className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+                    className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto background_bluish px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
                 >
                     <div className="flex items-center justify-between">
                         <a href="#" className="-m-1.5 p-1.5">
-                            <span className="sr-only">Your Company</span>
-                            <img
-                                className="h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                                alt=""
-                            />
+                            <span className="sr-only">IntelliDecor.Ai</span>
+                            <img className="h-8 w-auto" src={logo} alt="" />
                         </a>
                         <button
                             type="button"
@@ -322,8 +327,8 @@ export default function Header() {
                                 <Disclosure as="div" className="-mx-3">
                                     {({ open }) => (
                                         <>
-                                            <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 hover:bg-gray-50">
-                                                Product
+                                            <Disclosure.Button className="flex w-full text-white items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 hover:bg-slate-900">
+                                                Features
                                                 <ChevronDownIcon
                                                     className={classNames(
                                                         open
@@ -343,7 +348,7 @@ export default function Header() {
                                                         key={item.name}
                                                         as="a"
                                                         href={item.href}
-                                                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-white hover:bg-slate-900"
                                                     >
                                                         {item.name}
                                                     </Disclosure.Button>
@@ -352,41 +357,57 @@ export default function Header() {
                                         </>
                                     )}
                                 </Disclosure>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
-                                >
-                                    Features
-                                </a>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
-                                >
-                                    Marketplace
-                                </a>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
-                                >
-                                    Company
-                                </a>
-                            </div>
-                            <div className="py-6">
+
                                 <Link
-                                    to="/login"
-                                    className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
+                                    to="/design"
+                                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
                                 >
-                                    Log in
+                                    Dashboard
+                                </Link>
+                                <Link
+                                    to="/"
+                                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
+                                >
+                                    Blog
+                                </Link>
+                                <Link
+                                    to="/pricing"
+                                    className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
+                                >
+                                    Pricing
                                 </Link>
                             </div>
-                            <div className="py-6">
-                                <Link
-                                    to="/signup"
-                                    className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
-                                >
-                                    Sign up
-                                </Link>
-                            </div>
+                            {token && (
+                                <div className="py-6">
+                                    <Link
+                                        onClick={onLogout}
+                                        className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
+                                    >
+                                        Logout
+                                    </Link>
+                                </div>
+                            )}
+
+                            {!token && (
+                                <>
+                                    <div className="py-6">
+                                        <Link
+                                            to="/login"
+                                            className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
+                                        >
+                                            Log in
+                                        </Link>
+                                    </div>
+                                    <div className="py-6">
+                                        <Link
+                                            to="/signup"
+                                            className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-gray-200 hover:bg-gray-500"
+                                        >
+                                            Sign up
+                                        </Link>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </Dialog.Panel>

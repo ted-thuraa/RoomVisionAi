@@ -29,6 +29,7 @@ export default function Visiondash() {
 
     const [restoredLoaded, setRestoredLoaded] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [cancelUrl, setCancelUrl] = useState(null);
     const [sideBySide, setSideBySide] = useState(false);
     const [photoName, setPhotoName] = useState(null);
     const [error, setError] = useState(null);
@@ -145,6 +146,9 @@ export default function Visiondash() {
                 },
             });
             console.log(response.data);
+            if (response.data.id) {
+                setCancelUrl(response.data.urls.cancel);
+            }
             let newPhoto = await getStatus(response.data.id, photo);
             console.log(newPhoto);
         } catch (error) {
@@ -188,6 +192,19 @@ export default function Visiondash() {
             //saveData(originalPhoto, restoredImage, photo);
         }
     }
+
+    const cancelRender = (cancelUrl) => {
+        axiosClient
+            .post("/cancel", cancelUrl)
+            .then(({ data }) => {
+                console.log(data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
+    };
 
     const getBase64FromUrl = async (url) => {
         const data = await fetch(url);
@@ -568,33 +585,51 @@ export default function Visiondash() {
                                 </p>
                             </div>
                             <div className="pb-6">
-                                <button
-                                    onClick={() => {
-                                        if (
-                                            originalPhoto &&
-                                            room &&
-                                            style &&
-                                            mode &&
-                                            renders &&
-                                            resolution &&
-                                            privacy
-                                        ) {
-                                            startGeneration(
-                                                originalPhoto,
-                                                room,
-                                                style,
-                                                mode,
-                                                renders,
-                                                resolution,
-                                                privacy
-                                            );
-                                        }
-                                    }}
-                                    type="button"
-                                    class="text-white w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                                >
-                                    render new idea
-                                </button>
+                                {!loading && !restoredImage && (
+                                    <button
+                                        onClick={() => {
+                                            if (
+                                                originalPhoto &&
+                                                room &&
+                                                style &&
+                                                mode &&
+                                                renders &&
+                                                resolution &&
+                                                privacy &&
+                                                !loading
+                                            ) {
+                                                startGeneration(
+                                                    originalPhoto,
+                                                    room,
+                                                    style,
+                                                    mode,
+                                                    renders,
+                                                    resolution,
+                                                    privacy
+                                                );
+                                            }
+                                        }}
+                                        type="button"
+                                        class="text-white w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                                    >
+                                        render new idea
+                                    </button>
+                                )}
+
+                                {originalPhoto && !loading && restoredImage && (
+                                    <button
+                                        onClick={() => {
+                                            setOriginalPhoto(null);
+                                            setRestoredImage(null);
+                                            setRestoredLoaded(false);
+                                            setError(null);
+                                        }}
+                                        type="button"
+                                        class="text-white w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                                    >
+                                        Upload New Photo
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -602,79 +637,96 @@ export default function Visiondash() {
                 <div className="w-full md:w-3/5 block  min-h-screen md:right-0 absolute   pt-16 pb-3.5 overflow-y-hidden overflow-x-auto">
                     <div className="h-screen p-8 overflow-x-hidden overflow-y-scroll">
                         {!originalPhoto && (
-                            <div className="block ">
-                                <div className="sticky flex justify-center text-center">
-                                    <p className="border rounded-2xl py-1 px-4 text-slate-200 text-sm mb-5 hover:scale-105 transition duration-300 ease-in-out">
-                                        <span className="font-bold">400k+</span>{" "}
-                                        photos generated and counting.{" "}
-                                    </p>
-                                </div>
-                                {loadingRenders && (
-                                    <>
-                                        <div className="flex sm:space-x-4 sm:flex-row flex-col mb-6">
-                                            <div className="relative inline-block overflow-hidden md:w-1/2">
-                                                <Skeleton />
-                                            </div>
-                                            <div className="relative inline-block overflow-hidden  md:w-1/2">
-                                                <Skeleton />
-                                            </div>
-                                        </div>
-                                        <div className="flex sm:space-x-4 sm:flex-row flex-col mb-6">
-                                            <div className="relative inline-block overflow-hidden md:w-1/2">
-                                                <Skeleton />
-                                            </div>
-                                            <div className="relative inline-block overflow-hidden md:w-1/2">
-                                                <Skeleton />
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
+                            <>
+                                <div className="sticky block justify-center text-center">
+                                    <div className="block">
+                                        <p className="border w-1\2 md:mr-36 md:ml-36 rounded-2xl py-1 px-4 text-slate-200 text-sm mb-5 hover:scale-105 transition duration-300 ease-in-out">
+                                            <span className="font-bold">
+                                                400k+
+                                            </span>{" "}
+                                            photos generated and counting.{" "}
+                                        </p>
+                                    </div>
 
-                                {!loadingRenders &&
-                                    publicRenders.map((pair) => (
-                                        <div className="flex sm:space-x-4 sm:flex-row flex-col mb-6">
-                                            <div className="relative inline-block overflow-hidden ">
-                                                <div className="absolute bg-slate-900 bg-opacity-60 bottom-0 right-0 z-10 mb-1 font-light text-sm text-white">
-                                                    Original Photo
+                                    <div className="mb-6 md:hidden">
+                                        <button
+                                            type="button"
+                                            class="text-white w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                                        >
+                                            render new idea
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="block ">
+                                    {loadingRenders && (
+                                        <>
+                                            <div className="flex sm:space-x-4 sm:flex-row flex-col mb-6">
+                                                <div className="relative inline-block overflow-hidden md:w-1/2">
+                                                    <Skeleton />
                                                 </div>
-                                                <img
-                                                    alt="original photo"
-                                                    src={pair.originalimage_url}
-                                                    className="rounded-2xl relative object-cover"
-                                                    width={475}
-                                                    height={475}
-                                                />
+                                                <div className="relative inline-block overflow-hidden  md:w-1/2">
+                                                    <Skeleton />
+                                                </div>
                                             </div>
-                                            <div className="relative inline-block overflow-hidden sm:mt-0 mt-8">
-                                                <div className="absolute bg-slate-900 bg-opacity-60 bottom-0 right-0 z-10 mb-1 font-light text-sm text-white">
-                                                    {pair.prompt}
+                                            <div className="flex sm:space-x-4 sm:flex-row flex-col mb-6">
+                                                <div className="relative inline-block overflow-hidden md:w-1/2">
+                                                    <Skeleton />
                                                 </div>
-                                                <a
-                                                    href={
-                                                        pair.restoredimage_url
-                                                    }
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
+                                                <div className="relative inline-block overflow-hidden md:w-1/2">
+                                                    <Skeleton />
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {!loadingRenders &&
+                                        publicRenders.map((pair) => (
+                                            <div className="flex sm:space-x-4 sm:flex-row flex-col mb-6">
+                                                <div className="relative inline-block overflow-hidden ">
+                                                    <div className="absolute bg-slate-900 bg-opacity-60 bottom-0 right-0 z-10 mb-1 font-light text-sm text-white">
+                                                        Original Photo
+                                                    </div>
                                                     <img
-                                                        alt="restored photo"
+                                                        alt="original photo"
                                                         src={
-                                                            pair.restoredimage_url
+                                                            pair.originalimage_url
                                                         }
-                                                        className="rounded-2xl relative sm:mt-0 mt-2 cursor-zoom-in"
+                                                        className="rounded-2xl relative object-cover"
                                                         width={475}
                                                         height={475}
-                                                        onLoadingComplete={() =>
-                                                            setRestoredLoaded(
-                                                                true
-                                                            )
-                                                        }
                                                     />
-                                                </a>
+                                                </div>
+                                                <div className="relative inline-block overflow-hidden sm:mt-0 mt-8">
+                                                    <div className="absolute bg-slate-900 bg-opacity-60 bottom-0 right-0 z-10 mb-1 font-light text-sm text-white">
+                                                        {pair.prompt}
+                                                    </div>
+                                                    <a
+                                                        href={
+                                                            pair.restoredimage_url
+                                                        }
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
+                                                        <img
+                                                            alt="restored photo"
+                                                            src={
+                                                                pair.restoredimage_url
+                                                            }
+                                                            className="rounded-2xl relative sm:mt-0 mt-2 cursor-zoom-in"
+                                                            width={475}
+                                                            height={475}
+                                                            onLoadingComplete={() =>
+                                                                setRestoredLoaded(
+                                                                    true
+                                                                )
+                                                            }
+                                                        />
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                            </div>
+                                        ))}
+                                </div>
+                            </>
                         )}
                         {originalPhoto && !restoredImage && !loading && (
                             <img
@@ -771,14 +823,16 @@ export default function Visiondash() {
                                     </svg>
                                     Loading...
                                 </button>
-                                <button
-                                    disabled
-                                    className="bg-white rounded-full text-white font-medium px-4 pt-2 pb-3 mt-8 hover:bg-gray-300 w-40"
-                                >
-                                    <span className="pt-4 text-black">
-                                        Cancel
-                                    </span>
-                                </button>
+                                {/* {cancelUrl && (
+                                    <button
+                                        onClick={cancelRender(cancelUrl)}
+                                        className="bg-white rounded-full text-white font-medium px-4 pt-2 pb-3 mt-8 hover:bg-gray-300 w-40"
+                                    >
+                                        <span className="pt-4 text-black">
+                                            Cancel
+                                        </span>
+                                    </button>
+                                )} */}
                             </>
                         )}
                         {error && (

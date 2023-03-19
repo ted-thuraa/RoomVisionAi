@@ -99,6 +99,28 @@ class RoomVisionController extends Controller
     }
 
 
+    public function cancel($url)
+    {
+        try {
+            $response = $this->replicateService->cancelPrediction($url);
+        } catch (\Exception $e) {
+            return response([
+                "error" => true,
+                "message" => $e->getMessage()
+            ], 500);
+        }
+
+        if ($response->getStatusCode() != 200) {
+            return response([
+                "error" => true,
+                "message" => "Failed!"
+            ], 400);
+        }
+
+        return $response->json();
+    }
+
+
 
     
 

@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../style";
 import Header from "../components/Header";
+import Pricing from "../components/Pricing";
 
 import {
     DashShowcase,
@@ -32,7 +33,6 @@ export default function Home() {
                     <Business />
                     <CardDeal />
                     <Testimonials />
-
                     <CTA />
                     <Footer />
                 </div>
